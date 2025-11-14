@@ -31,7 +31,7 @@ export function OurStory() {
 
           <Card className="overflow-hidden">
             <img
-              src="/mariafer/romantic-couple-portrait-engagement-photo.jpg"
+              src="/mariafer/fotoMariaFerOurStory2.jpg"
               alt="Sarah and James"
               className="w-full h-full object-cover"
             />
