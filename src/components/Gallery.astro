@@ -1,0 +1,246 @@
+---
+// Gallery.astro
+const images = [
+  { src: "/mariafer/mariaFerBoda2.jpg", alt: "Preparados para el bando de la huerta", span: "gallery__card--span-2" },
+  { src: "/mariafer/mariaFerBando.jpg", alt: "Couple laughing together in nature", span: "" },
+  { src: "/mariafer/mariaFerBodaSelfie.jpg", alt: "Couple holding hands close up", span: "" },
+  { src: "/mariafer/mariaFerSicilia.jpg", alt: "Couple dancing together", span: "gallery__card--span-2" },
+  { src: "/mariafer/mariaFerSicilia2.jpg", alt: "Couple having picnic in park", span: "gallery__card--span-2" },
+  { src: "/mariafer/mariaFerSelfieMar.jpg", alt: "Couple portrait in golden hour", span: "" },
+  { src: "/mariafer/mariaFerMoto.jpg", alt: "Couple portrait in golden hour", span: "" },
+  { src: "/mariafer/mariaFerPlaya.jpg", alt: "Couple portrait in golden hour", span: "gallery__card--span-2" },
+];
+---
+
+<section id="gallery" class="gallery">
+  <div class="gallery__container">
+    <h2 class="gallery__heading">Galería</h2>
+
+    <div class="gallery__grid">
+      {images.map((image, index) => (
+        <div class={`gallery__card ${image.span}`}>
+          <button 
+            class="gallery__button" 
+            data-image={image.src}
+            data-alt={image.alt}
+            aria-label={`View ${image.alt}`}
+          >
+            <img
+              src={image.src}
+              alt={image.alt}
+              class="gallery__image"
+              loading="lazy"
+            />
+          </button>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Lightbox Modal -->
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <button class="lightbox__close" aria-label="Close lightbox">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 6 6 18M6 6l12 12"></path>
+      </svg>
+    </button>
+    <img src="" alt="" class="lightbox__image" />
+  </div>
+</section>
+
+<script>
+  // Lightbox functionality
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImage = lightbox?.querySelector('.lightbox__image') as HTMLImageElement;
+  const closeButton = lightbox?.querySelector('.lightbox__close');
+  const galleryButtons = document.querySelectorAll('.gallery__button');
+
+  // Open lightbox
+  galleryButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const imageSrc = button.getAttribute('data-image');
+      const imageAlt = button.getAttribute('data-alt');
+      
+      if (lightboxImage && imageSrc && imageAlt) {
+        lightboxImage.src = imageSrc;
+        lightboxImage.alt = imageAlt;
+        lightbox?.classList.add('lightbox--active');
+        lightbox?.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+    });
+  });
+
+  // Close lightbox
+  const closeLightbox = () => {
+    lightbox?.classList.remove('lightbox--active');
+    lightbox?.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+
+  closeButton?.addEventListener('click', closeLightbox);
+  lightbox?.addEventListener('click', (e) => {
+    if (e.target === lightbox) {
+      closeLightbox();
+    }
+  });
+
+  // Close with Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && lightbox?.classList.contains('lightbox--active')) {
+      closeLightbox();
+    }
+  });
+</script>
+
+<style>
+  .gallery {
+    padding: 6rem 1rem;
+    background-color: white;
+  }
+
+  .gallery__container {
+    max-width: 72rem;
+    margin: 0 auto;
+  }
+
+  .gallery__heading {
+    font-family: serif;
+    font-size: 3rem;
+    font-weight: 300;
+    text-align: center;
+    margin-bottom: 4rem;
+    color: #1a1a1a;
+  }
+
+  @media (min-width: 768px) {
+    .gallery__heading {
+      font-size: 3.75rem;
+    }
+  }
+
+  /* Gallery Grid - Masonry Style */
+  .gallery__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .gallery__grid {
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 350px;
+    }
+  }
+
+  /* Gallery Cards */
+  .gallery__card {
+    overflow: hidden;
+    border-radius: 0.75rem;
+    background: white;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+
+  .gallery__card--span-2 {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+
+  @media (min-width: 768px) {
+    .gallery__card--span-2 {
+      grid-column: span 2;
+    }
+  }
+
+  /* Gallery Button */
+  .gallery__button {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: block;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Gallery Images */
+  .gallery__image {
+    width: 100%;
+    height: 100%;
+    min-height: 250px;
+    object-fit: cover;
+    object-position: top;
+    transition: transform 0.3s ease;
+    display: block;
+  }
+
+  .gallery__card--span-2{
+      .gallery__image {
+        object-position: center;
+      }
+  }
+  @media (max-width: 767px) {
+    .gallery__image {
+      min-height: 200px;
+    }
+
+  }
+
+  .gallery__button:hover .gallery__image {
+    transform: scale(1.05);
+  }
+
+  /* Lightbox */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .lightbox--active {
+    display: flex;
+  }
+
+  .lightbox__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+    z-index: 101;
+  }
+
+  .lightbox__close:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .lightbox__close svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .lightbox__image {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    border-radius: 0.5rem;
+  }
+</style>

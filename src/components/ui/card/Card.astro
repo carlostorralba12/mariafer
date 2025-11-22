@@ -1,0 +1,33 @@
+---
+// Card.astro
+// Main card container component
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div
+  data-slot="card"
+  class:list={[
+    "card",
+    className
+  ]}
+>
+  <slot />
+</div>
+
+<style>
+  .card {
+    background-color: white;
+    color: #1a1a1a;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid #e5e5e5;
+    padding: 1.5rem 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+</style>

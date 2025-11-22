@@ -1,0 +1,25 @@
+---
+// CardContent.astro
+// Card main content container
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div
+  data-slot="card-content"
+  class:list={[
+    "card-content",
+    className
+  ]}
+>
+  <slot />
+</div>
+
+<style>
+  .card-content {
+    padding: 0 1.5rem;
+  }
+</style>

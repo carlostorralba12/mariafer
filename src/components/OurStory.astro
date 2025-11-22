@@ -1,0 +1,136 @@
+---
+// OurStory.astro
+// Our story section component with narrative content
+import Card from './ui/card/Card.astro';
+
+// Story content configuration
+
+const stories = [
+  {
+    title: "Nuestro gran día",
+    content: "Nos hace muchísima ilusión compartir contigo que nos casamos. Queremos vivir este día tan especial rodeados del cariño de nuestra familia y nuestros amigos, y nos encantaría que formaras parte de este momento."
+  },
+  {
+    title: "Eres parte de nuestra historia",
+    content: "Si estás leyendo esto es porque formas parte de nuestra historia y ocupas un lugar muy especial en nuestros corazones. No imaginamos dar este gran paso sin ti, así que nos llena de alegría poder compartir nuestra felicidad contigo."
+  },
+  {
+    title: "La celebración",
+    content: "La ceremonia y la celebración tendrán lugar en la hermosa Finca Siempreverde (Murcia), un lugar lleno de encanto y naturaleza donde podremos disfrutar juntos, brindar, reír y crear recuerdos inolvidables en este día tan importante."
+  }
+];
+
+
+// Props interface for customization
+interface Props {
+  sectionId?: string;
+  heading?: string;
+  imageSrc?: string;
+  imageAlt?: string;
+  storyContent?: typeof stories;
+}
+
+const {
+  sectionId = "day",
+  heading = "El Gran Día",
+  imageSrc = "/mariafer/mariaFerPuerto.jpg",
+  imageAlt = "Fernando and María",
+  storyContent = stories
+} = Astro.props;
+---
+
+<section id={sectionId} class="story">
+  <div class="story__container">
+    <h2 class="story__heading">{heading}</h2>
+
+    <div class="story__grid">
+      <div class="story__content">
+        {storyContent.map((story) => (
+          <div class="story__block">
+            <h3 class="story__subtitle">{story.title}</h3>
+            <p class="story__text">{story.content}</p>
+          </div>
+        ))}
+      </div>
+
+      <Card class="story__image-card">
+        <img
+          src={imageSrc}
+          alt={imageAlt}
+          class="story__image"
+          loading="lazy"
+        />
+      </Card>
+    </div>
+  </div>
+</section>
+
+<style>
+  .story {
+    padding: 6rem 1rem;
+  }
+
+  .story__container {
+    max-width: 72rem;
+    margin: 0 auto;
+  }
+
+  .story__heading {
+    font-family: serif;
+    font-size: 3rem;
+    font-weight: 300;
+    text-align: center;
+    margin-bottom: 4rem;
+    text-wrap: balance;
+  }
+
+  @media (min-width: 768px) {
+    .story__heading {
+      font-size: 3.75rem;
+    }
+  }
+
+  .story__grid {
+    display: grid;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  @media (min-width: 768px) {
+    .story__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .story__content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .story__block {
+    margin-bottom: 0;
+  }
+
+  .story__subtitle {
+    font-family: serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .story__text {
+    color: #737373;
+    line-height: 1.625;
+  }
+
+  .story__image-card {
+    overflow: hidden;
+    height: 100%;
+  }
+
+  .story__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+</style>

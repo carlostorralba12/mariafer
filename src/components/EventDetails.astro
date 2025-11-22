@@ -1,0 +1,314 @@
+---
+// EventDetails.astro
+import { Icon } from 'astro-icon/components';
+
+const events = [
+  {
+    icon: "lucide:clock",
+    title: "Ceremonia",
+    time: "17:00",
+    description: "Acompáñanos mientras intercambiamos nuestros votos",
+  },
+  {
+    icon: "lucide:utensils",
+    title: "Banquete",
+    time: "19:00",
+    description: "Cena y celebración bajo las estrellas",
+  },
+  {
+    icon: "lucide:music",
+    title: "Baile",
+    time: "21:00",
+    description: "Baila toda la noche con nosotros",
+  },
+];
+
+// Coordenadas de Finca Siempreverde Murcia
+const venueLocation = {
+  name: "Finca Siempreverde",
+  address: "Camino del Mojón, s/n",
+  city: "Murcia",
+  postalCode: "30120",
+  country: "España",
+  // Coordenadas aproximadas - ajusta según la ubicación exacta
+  lat: "37.9922",
+  lng: "-1.1307",
+  googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=Finca+Siempreverde+Murcia"
+};
+---
+
+<section id="details" class="event-details">
+  <!-- Background Image -->
+  <div class="event-details__background">
+    <img 
+      src="/mariafer/fincaSiempreVerde.jpg" 
+      alt="Finca Siempreverde" 
+      class="event-details__background-image"
+    />
+    <div class="event-details__overlay"></div>
+  </div>
+
+  <div class="event-details__container">
+    <h2 class="event-details__heading">Detalles</h2>
+
+    <!-- Venue Card with Google Maps -->
+    <div class="venue-card">
+      <div class="venue-card__map">
+        <iframe
+          src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3145.123!2d${venueLocation.lng}!3d${venueLocation.lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zM0fCsDU5JzMxLjkiTiAxwrAwNyc1MC41Ilc!5e0!3m2!1ses!2ses!4v1234567890123!5m2!1ses!2ses`}
+          width="100%"
+          height="300"
+          style="border:0;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Ubicación Finca Siempreverde"
+        ></iframe>
+      </div>
+      
+      <div class="venue-card__content">
+        <Icon name="lucide:map-pin" class="venue-card__icon" />
+        <div class="venue-card__text">
+          <h3 class="venue-card__title">{venueLocation.name}</h3>
+          <p class="venue-card__address">
+            {venueLocation.address}<br />
+            {venueLocation.postalCode} {venueLocation.city}<br />
+            {venueLocation.country}
+          </p>
+          <a 
+            href={venueLocation.googleMapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="venue-card__link"
+          >
+            <Icon name="lucide:navigation" class="venue-card__link-icon" />
+            Ver en Google Maps
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Events Grid -->
+    <div class="event-details__grid">
+      {events.map((event) => (
+        <div class="event-card">
+          <div class="event-card__content">
+            <Icon name={event.icon} class="event-card__icon" />
+            <h3 class="event-card__title">{event.title}</h3>
+            <p class="event-card__time">{event.time}</p>
+            <p class="event-card__description">{event.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .event-details {
+    padding: 6rem 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Background Image */
+  .event-details__background {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .event-details__background-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .event-details__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.75) 0%,
+      rgba(255, 255, 255, 0.6) 50%,
+      rgba(255, 255, 255, 0.75) 100%
+    );
+  }
+
+  .event-details__container {
+    max-width: 72rem;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .event-details__heading {
+    font-family: serif;
+    font-size: 3rem;
+    font-weight: 300;
+    text-align: center;
+    margin-bottom: 4rem;
+    color: #1a1a1a;
+  }
+
+  @media (min-width: 768px) {
+    .event-details__heading {
+      font-size: 3.75rem;
+    }
+  }
+
+  /* Venue Card */
+  .venue-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.75rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+  }
+
+  .venue-card__map {
+    width: 100%;
+    height: 300px;
+    background: #f3f4f6;
+  }
+
+  .venue-card__map iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .venue-card__content {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 3rem;
+  }
+
+  @media (max-width: 767px) {
+    .venue-card__content {
+      padding: 2rem;
+    }
+  }
+
+  .venue-card__icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    flex-shrink: 0;
+    margin-top: 0.25rem;
+    color: #1a1a1a;
+  }
+
+  .venue-card__text {
+    flex: 1;
+  }
+
+  .venue-card__title {
+    font-family: serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin: 0 0 0.5rem 0;
+    color: #1a1a1a;
+  }
+
+  .venue-card__address {
+    color: #6b7280;
+    line-height: 1.625;
+    margin: 0 0 1rem 0;
+    font-size: 1rem;
+  }
+
+  .venue-card__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #2563eb;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: color 0.2s ease;
+    padding: 0.5rem 1rem;
+    border: 1px solid #2563eb;
+    border-radius: 0.375rem;
+    margin-top: 0.5rem;
+  }
+
+  .venue-card__link:hover {
+    color: #1d4ed8;
+    border-color: #1d4ed8;
+    background-color: #eff6ff;
+  }
+
+  .venue-card__link-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  /* Events Grid */
+  .event-details__grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 768px) {
+    .event-details__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* Event Cards */
+  .event-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .event-card__content {
+    padding: 3rem 2rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 280px;
+  }
+
+  @media (max-width: 767px) {
+    .event-card__content {
+      padding: 2.5rem 2rem;
+      min-height: 240px;
+    }
+  }
+
+  .event-card__icon {
+    width: 2rem;
+    height: 2rem;
+    margin: 0 0 1.5rem 0;
+    color: #1a1a1a;
+  }
+
+  .event-card__title {
+    font-family: serif;
+    font-size: 1.25rem;
+    font-weight: 400;
+    margin: 0 0 0.75rem 0;
+    color: #1a1a1a;
+  }
+
+  .event-card__time {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 0 0 1rem 0;
+    color: #1a1a1a;
+  }
+
+  .event-card__description {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0;
+    line-height: 1.5;
+  }
+</style>

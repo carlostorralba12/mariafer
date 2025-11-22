@@ -1,0 +1,27 @@
+---
+// CardDescription.astro
+// Card description text component
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div
+  data-slot="card-description"
+  class:list={[
+    "card-description",
+    className
+  ]}
+>
+  <slot />
+</div>
+
+<style>
+  .card-description {
+    color: #737373;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+</style>

@@ -1,0 +1,26 @@
+---
+// CardTitle.astro
+// Card title text component
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div
+  data-slot="card-title"
+  class:list={[
+    "card-title",
+    className
+  ]}
+>
+  <slot />
+</div>
+
+<style>
+  .card-title {
+    line-height: 1;
+    font-weight: 600;
+  }
+</style>

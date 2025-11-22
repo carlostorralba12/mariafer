@@ -1,0 +1,40 @@
+---
+// CardHeader.astro
+// Card header section with grid layout
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div
+  data-slot="card-header"
+  class:list={[
+    "card-header",
+    className
+  ]}
+>
+  <slot />
+</div>
+
+<style>
+  .card-header {
+    container-type: inline-size;
+    container-name: card-header;
+    display: grid;
+    grid-auto-rows: min-content;
+    grid-template-rows: auto auto;
+    align-items: start;
+    gap: 0.5rem;
+    padding: 0 1.5rem;
+  }
+
+  .card-header:has([data-slot="card-action"]) {
+    grid-template-columns: 1fr auto;
+  }
+
+  .card-header:has(.border-b) {
+    padding-bottom: 1.5rem;
+  }
+</style>

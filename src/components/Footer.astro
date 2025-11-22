@@ -1,0 +1,123 @@
+---
+// Footer.astro
+// Site footer component with contact information for dentist couple
+interface Props {
+  coupleNames?: string;
+  weddingDate?: string;
+  location?: string;
+  contactEmail?: string;
+}
+
+const {
+  coupleNames = "Fernando & María",
+  weddingDate = "9 de mayo del 2026",
+  location = "Finca Siempreverde, Murcia",
+  contactEmail = "hello@fernandomaria.com"
+} = Astro.props;
+---
+
+<footer class="footer">
+  <div class="footer__container">
+    <div class="footer__content">
+      <div class="footer__names">
+        <span class="footer__emoji" role="img" aria-label="sonrisa">😁</span>
+        <p class="footer__couple">{coupleNames}</p>
+        <span class="footer__emoji" role="img" aria-label="sonrisa">😁</span>
+      </div>
+
+      <p class="footer__date">
+        {weddingDate} • {location}
+      </p>
+
+      <p class="footer__contact">
+        Para cualquier consulta, contáctanos en{" "}
+        <a
+          href={`mailto:${contactEmail}`}
+          class="footer__link"
+        >
+          {contactEmail}
+        </a>
+      </p>
+
+      <p class="footer__tagline">
+        <span class="footer__emoji-small" role="img" aria-label="diente">🦷</span>
+        <span class="footer__emoji-small" role="img" aria-label="corazón">❤️</span>
+        <span class="footer__emoji-small" role="img" aria-label="diente">🦷</span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    padding: 3rem 1rem;
+    border-top: 1px solid #e5e5e5;
+    background-color: #fafafa;
+  }
+
+  .footer__container {
+    max-width: 72rem;
+    margin: 0 auto;
+  }
+
+  .footer__content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .footer__names {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .footer__emoji {
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  .footer__couple {
+    font-family: serif;
+    font-size: 1.25rem;
+    margin: 0;
+    color: #1a1a1a;
+  }
+
+  .footer__date {
+    font-size: 0.875rem;
+    color: #737373;
+    margin: 0;
+  }
+
+  .footer__contact {
+    font-size: 0.75rem;
+    color: #737373;
+    margin: 0;
+  }
+
+  .footer__link {
+    text-decoration: underline;
+    color: inherit;
+    transition: color 0.2s ease;
+  }
+
+  .footer__link:hover {
+    color: #0066cc;
+  }
+
+  .footer__tagline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .footer__emoji-small {
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+</style>

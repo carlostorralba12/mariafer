@@ -1,0 +1,29 @@
+---
+// CardAction.astro
+// Card action button container
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div
+  data-slot="card-action"
+  class:list={[
+    "card-action",
+    className
+  ]}
+>
+  <slot />
+</div>
+
+<style>
+  .card-action {
+    grid-column-start: 2;
+    grid-row: span 2 / span 2;
+    grid-row-start: 1;
+    align-self: start;
+    justify-self: end;
+  }
+</style>
