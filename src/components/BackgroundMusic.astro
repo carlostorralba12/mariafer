@@ -5,19 +5,16 @@ import { Icon } from 'astro-icon/components';
 const src = '/mariafer/que-merezca-la-pena.mp3';
 ---
 
-<!-- Audio oculto -->
+<!-- Audio limpio -->
 <audio 
   id="bg-music"
+  type="audio/mp3"
   src={src}
-  autoplay
-  muted
   loop
-  preload="auto"
-  volume="0.4"
-  playsinline
+  autoplay
 />
 
-<!-- Botón ABAJO DERECHA con DOS iconos -->
+<!-- Botón ABAJO DERECHA -->
 <button class="music-control" aria-label="Control de música" title="Activar sonido">
   <span class="icon-wrapper icon-play">
     <Icon name="lucide:play-circle" />
@@ -28,28 +25,79 @@ const src = '/mariafer/que-merezca-la-pena.mp3';
 </button>
 
 <script>
-  const audio = document.getElementById('bg-music') as HTMLAudioElement;
-  const button = document.querySelector('.music-control') as HTMLButtonElement;
+  // Variable global para evitar múltiples inicializaciones
+  if (typeof window !== 'undefined' && !(window as any).musicPlayerInitialized) {
+    (window as any).musicPlayerInitialized = true;
 
-  if (audio && button) {
-    button.addEventListener('click', () => {
-      if (audio.muted) {
-        // ▶️ → ⏸️ (ACTIVAR SONIDO)
-        audio.muted = false;
+    const audio = document.getElementById('bg-music') as HTMLAudioElement;
+    const button = document.querySelector('.music-control') as HTMLButtonElement;
+
+    if (audio && button) {
+      let audioStarted = false;
+
+      const playAudio = async () => {
+        if (audioStarted) return;
+        
+        try {
+          audio.volume = 0.4;
+          await audio.play();
+          audioStarted = true;
+          button.classList.add('playing');
+          button.title = 'Pausar música';
+        } catch (error) {
+          console.log('Esperando interacción del usuario');
+        }
+      };
+
+      // Click manual en el botón
+      button.addEventListener('click', async () => {
+        if (audio.paused) {
+          // ▶️ → ⏸️
+          try {
+            audio.volume = 0.4;
+            await audio.play();
+            audioStarted = true;
+            button.classList.add('playing');
+            button.title = 'Pausar música';
+          } catch (error) {
+            console.log('Error al reproducir');
+          }
+        } else {
+          // ⏸️ → ▶️
+          audio.pause();
+          button.classList.remove('playing');
+          button.title = 'Reproducir música';
+        }
+      });
+
+      // Sincronizar iconos con estado del audio
+      audio.addEventListener('play', () => {
         button.classList.add('playing');
-        button.title = 'Pausar música';
-      } else {
-        // ⏸️ → ▶️ (SILENCIAR)
-        audio.muted = true;
-        button.classList.remove('playing');
-        button.title = 'Activar sonido';
-      }
-    });
+      });
 
-    // Simular click automático después de 0.1 segundos
-    setTimeout(() => {
-      button.click();
-    }, 0);
+      audio.addEventListener('pause', () => {
+        button.classList.remove('playing');
+      });
+
+      // AUTO-START: Primer click en la página (solo una vez)
+      const handleFirstClick = () => {
+        if (!audioStarted) {
+          playAudio();
+        }
+        document.removeEventListener('click', handleFirstClick);
+        document.removeEventListener('touchstart', handleFirstClick);
+      };
+
+      document.addEventListener('click', handleFirstClick, { once: true });
+      document.addEventListener('touchstart', handleFirstClick, { once: true });
+
+      // Intentar auto-reproducir (puede fallar)
+      setTimeout(() => {
+        if (!audioStarted) {
+          playAudio();
+        }
+      }, 100);
+    }
   }
 </script>
 
@@ -106,7 +154,6 @@ const src = '/mariafer/que-merezca-la-pena.mp3';
     transition: color 0.25s ease;
   }
 
-  /* Estado inicial: mostrar PLAY, ocultar PAUSE */
   .icon-play {
     opacity: 1;
     transform: scale(1);
@@ -117,7 +164,6 @@ const src = '/mariafer/que-merezca-la-pena.mp3';
     transform: scale(0.8);
   }
 
-  /* Estado playing: ocultar PLAY, mostrar PAUSE */
   .music-control.playing .icon-play {
     opacity: 0;
     transform: scale(0.8);
