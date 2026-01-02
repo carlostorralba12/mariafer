@@ -1,0 +1,162 @@
+---
+// src/components/BackgroundMusic.astro
+import { Icon } from 'astro-icon/components';
+
+const src = '/mariafer/que-merezca-la-pena.mp3';
+---
+
+<!-- Audio oculto -->
+<audio 
+  id="bg-music"
+  src={src}
+  autoplay
+  muted
+  loop
+  preload="auto"
+  volume="0.4"
+  playsinline
+/>
+
+<!-- Botón ABAJO DERECHA con DOS iconos -->
+<button class="music-control" aria-label="Control de música" title="Activar sonido">
+  <span class="icon-wrapper icon-play">
+    <Icon name="lucide:play-circle" />
+  </span>
+  <span class="icon-wrapper icon-pause">
+    <Icon name="lucide:pause-circle" />
+  </span>
+</button>
+
+<script>
+  const audio = document.getElementById('bg-music') as HTMLAudioElement;
+  const button = document.querySelector('.music-control') as HTMLButtonElement;
+
+  if (audio && button) {
+    button.addEventListener('click', () => {
+      if (audio.muted) {
+        // ▶️ → ⏸️ (ACTIVAR SONIDO)
+        audio.muted = false;
+        button.classList.add('playing');
+        button.title = 'Pausar música';
+      } else {
+        // ⏸️ → ▶️ (SILENCIAR)
+        audio.muted = true;
+        button.classList.remove('playing');
+        button.title = 'Activar sonido';
+      }
+    });
+
+    // Simular click automático después de 0.1 segundos
+    setTimeout(() => {
+      button.click();
+    }, 0);
+  }
+</script>
+
+<style>
+  #bg-music {
+    display: none;
+  }
+
+  .music-control {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 3.75rem;
+    height: 3.75rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 2px solid rgba(59, 130, 246, 0.3);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  }
+
+  .music-control:hover {
+    transform: scale(1.08);
+    border-color: #3b82f6;
+    background: rgba(59, 130, 246, 0.1);
+  }
+
+  .music-control.playing {
+    background: rgba(59, 130, 246, 0.2);
+    border-color: #3b82f6;
+    animation: pulse 1.5s infinite;
+  }
+
+  .icon-wrapper {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .icon-wrapper :global(svg) {
+    width: 2rem;
+    height: 2rem;
+    color: #6b7280;
+    transition: color 0.25s ease;
+  }
+
+  /* Estado inicial: mostrar PLAY, ocultar PAUSE */
+  .icon-play {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .icon-pause {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  /* Estado playing: ocultar PLAY, mostrar PAUSE */
+  .music-control.playing .icon-play {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  .music-control.playing .icon-pause {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .music-control.playing .icon-wrapper :global(svg) {
+    color: #3b82f6;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      box-shadow: 0 8px 32px rgba(59, 130, 246, 0.3);
+    }
+    50% {
+      box-shadow: 0 12px 40px rgba(59, 130, 246, 0.5);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .music-control {
+      bottom: 1rem;
+      right: 1rem;
+      width: 3.25rem;
+      height: 3.25rem;
+    }
+    
+    .icon-wrapper {
+      width: 1.75rem;
+      height: 1.75rem;
+    }
+
+    .icon-wrapper :global(svg) {
+      width: 1.75rem;
+      height: 1.75rem;
+    }
+  }
+</style>

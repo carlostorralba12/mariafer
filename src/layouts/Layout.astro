@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css"
+import BackgroundMusic from '../components/BackgroundMusic.astro';
 
 // Astro doesn't use React Suspense or Next's font loader.
 // Instead, load Google Fonts via <link> or a custom CSS variable.
@@ -49,5 +50,6 @@ const description = "Únete a nosotros para celebrar nuestro día especial"
 
   <body class="font-sans antialiased">
     <slot />  <!-- equivalent to {children} -->
+    <BackgroundMusic  />
   </body>
 </html>
