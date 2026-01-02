@@ -122,3 +122,13 @@
     @apply bg-background text-foreground;
   }
 }
+
+@media (max-width: 768px) {
+  [class*="hero"] {
+    align-items: unset !important;
+  }
+  [class*="hero__content"] {
+    padding-top: 7rem !important;
+  }
+}
+

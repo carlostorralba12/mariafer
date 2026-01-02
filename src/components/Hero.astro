@@ -14,7 +14,7 @@ interface Props {
 
 // Destructure props with default values
 const {
-  imageSrc = "/mariafer/mariaFerBoda.jpg",
+  imageSrc = "/mariafer/mariaFerSicilia.jpg",
   imageAlt = "Wedding venue",
   title = "Fernando & María",
   subtitle = "Nos casamos",
@@ -41,14 +41,7 @@ const {
     <h1 class="hero__title">
       {title}
     </h1>
-    <p class="hero__subtitle">{subtitle}</p>
-    <p class="hero__details">
-      {date} • {location}
-    </p>
-
-    <a href={ctaHref} class="hero__cta">
-      {ctaText}
-    </a>
+    <h2 class="hero__subtitle">{subtitle}</h2>
   </div>
 </section>
 
@@ -57,11 +50,18 @@ const {
     position: relative;
     min-height: 100vh;
     display: flex;
-    align-items: center;
     justify-content: center;
     padding: 1rem;
+    align-items: center;
   }
 
+  .hero__subtitle{
+    font-size: 2rem;
+    font-family: serif;
+    font-weight: 300;
+    font-style: italic;
+    color: #1a1a1a;
+  }
   .hero__background {
     position: absolute;
     inset: 0;
@@ -88,18 +88,11 @@ const {
   }
 
   .hero__title {
-    font-family: serif;
+    font-family: 'Birthstone', serif;
     font-size: 3.75rem;
     font-weight: 300;
-    margin-bottom: 1.5rem;
     line-height: 1.1;
     text-wrap: balance;
   }
 
-  @media (min-width: 768px) {
-    .hero__title {
-      font-size: 6rem;
-    }
-  }
-
-  .hero
+</style>

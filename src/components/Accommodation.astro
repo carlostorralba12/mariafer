@@ -1,0 +1,277 @@
+---
+// AccommodationSection.astro
+import { Icon } from 'astro-icon/components';
+
+const hotels = [
+  {
+    name: "AC Hotel Murcia",
+    distance: "Salida de autobuses",
+    address: "Salida y llegada de autobuses desde hotel.",
+    phone: "+34 968 27 42 50",
+    bookingUrl: "https://www.marriott.com/en-us/hotels/mjvmu-ac-hotel-murcia/overview/?scid=f2ae0541-1279-4f24-b197-a979c79310b0",
+    icon: "lucide:building-2"
+  },
+  {
+    name: "Sercotel JC1 Murcia",
+    distance: false,
+    address: "10 min a pie de la parada de autobuses.",
+    phone: "+34 968 85 88 44",
+    bookingUrl: "https://www.sercotelhoteles.com/es/hotel-jc1-murcia?utm_source=google&utm_medium=referral&utm_campaign=metasearch-links",
+    icon: "lucide:home"
+  },
+    {
+    name: "Hotel Ibis Murcia",
+    distance: false, 
+    address: "4 min a pie de la parada de autobuses.",
+    phone: "+34 968 27 49 39",
+    bookingUrl: "https://all.accor.com/hotel/3676/index.en.shtml?utm_campaign=seo+maps&utm_medium=seo+maps&utm_source=google+Maps",
+    icon: "lucide:building"
+  }
+];
+---
+
+<section id="accommodation" class="accommodation-section">
+  <!-- Background Pattern diferente al de events -->
+  <div class="accommodation-section__background">
+    <div class="accommodation-section__pattern"></div>
+    <div class="accommodation-section__gradient"></div>
+  </div>
+
+  <div class="accommodation-section__container">
+    <h2 class="accommodation-section__heading">Alojamiento</h2>
+    
+    <p class="accommodation-section__subtitle">
+      Te recomendamos estos hoteles cercanos a la parada de autobuses. Reserva con antelación.
+    </p>
+
+    <!-- Hotels Grid -->
+    <div class="accommodation-section__grid">
+      {hotels.map((hotel, index) => (
+        <div class="hotel-card" style={`animation-delay: ${index * 0.1}s`}>
+          <div class="hotel-card__header">
+            <Icon name={hotel.icon} class="hotel-card__icon" />
+            {hotel.distance && <div class="hotel-card__distance">{hotel.distance}</div>}
+          </div>
+          
+          <div class="hotel-card__content">
+            <h3 class="hotel-card__name">{hotel.name}</h3>
+            <p class="hotel-card__address">{hotel.address}</p>
+            <p class="hotel-card__phone">
+              <Icon name="lucide:phone" class="hotel-card__phone-icon" />
+              {hotel.phone}
+            </p>
+            
+            <a 
+              href={hotel.bookingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="hotel-card__booking"
+            >
+              <Icon name="lucide:arrow-up-right" class="hotel-card__booking-icon" />
+              Reservar ahora
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .accommodation-section {
+    padding: 6rem 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Background Pattern - estilo diferente pero coherente */
+  .accommodation-section__background {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .accommodation-section__pattern {
+    position: absolute;
+    inset: 0;
+    background-image: 
+      radial-gradient(circle at 25% 25%, rgba(37, 99, 235, 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 75% 75%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
+    background-size: 100px 100px;
+  }
+
+  .accommodation-section__gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(248, 250, 252, 0.9) 0%,
+      rgba(255, 255, 255, 0.95) 50%,
+      rgba(248, 250, 252, 0.9) 100%
+    );
+  }
+
+  .accommodation-section__container {
+    max-width: 72rem;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .accommodation-section__heading {
+    font-family: serif;
+    font-size: 3rem;
+    font-weight: 300;
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #1a1a1a;
+  }
+
+  @media (min-width: 768px) {
+    .accommodation-section__heading {
+      font-size: 3.75rem;
+    }
+  }
+
+  .accommodation-section__subtitle {
+    text-align: center;
+    color: #6b7280;
+    font-size: 1.125rem;
+    margin-bottom: 4rem;
+    max-width: 36rem;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+  }
+
+  /* Hotels Grid */
+  .accommodation-section__grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 768px) {
+    .accommodation-section__grid {
+      grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    }
+  }
+
+  /* Hotel Cards - estilo diferente pero coherente */
+  .hotel-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #e2e8f0;
+    border-radius: 1rem;
+    padding: 2.5rem 2rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 10px -2px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: slideUp 0.6s ease-out forwards;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .hotel-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15), 0 8px 20px -5px rgba(0, 0, 0, 0.1);
+    border-color: #3b82f6;
+  }
+
+  @keyframes slideUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .hotel-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+
+  .hotel-card__icon {
+    width: 2rem;
+    height: 2rem;
+    color: #3b82f6;
+  }
+
+  .hotel-card__distance {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .hotel-card__content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .hotel-card__name {
+    font-family: serif;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin: 0;
+  }
+
+  .hotel-card__address {
+    color: #6b7280;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .hotel-card__phone {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #374151;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .hotel-card__phone-icon {
+    width: 1rem;
+    height: 1rem;
+    color: #6b7280;
+  }
+
+  .hotel-card__booking {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #3b82f6;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid #3b82f6;
+    border-radius: 0.5rem;
+    margin-top: auto;
+    transition: all 0.2s ease;
+  }
+
+  .hotel-card__booking:hover {
+    background: #3b82f6;
+    color: white;
+    transform: translateY(-1px);
+  }
+
+  .hotel-card__booking-icon {
+    width: 1rem;
+    height: 1rem;
+    transition: transform 0.2s ease;
+  }
+
+  .hotel-card__booking:hover .hotel-card__booking-icon {
+    transform: rotate(45deg) scale(1.1);
+  }
+</style>

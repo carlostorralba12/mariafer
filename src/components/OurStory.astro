@@ -6,17 +6,17 @@ import Card from './ui/card/Card.astro';
 // Story content configuration
 
 const stories = [
+  // {
+  //   title: "Nuestro gran día",
+  //   content: "Nos hace muchísima ilusión compartir contigo que nos casamos. Queremos vivir este día tan especial rodeados del cariño de nuestra familia y nuestros amigos, y nos encantaría que formaras parte de este momento."
+  // },
+  // {
+  //   title: "Eres parte de nuestra historia",
+  //   content: "Si estás leyendo esto es porque formas parte de nuestra historia y ocupas un lugar muy especial en nuestros corazones. No imaginamos dar este gran paso sin ti, así que nos llena de alegría poder compartir nuestra felicidad contigo."
+  // },
   {
-    title: "Nuestro gran día",
-    content: "Nos hace muchísima ilusión compartir contigo que nos casamos. Queremos vivir este día tan especial rodeados del cariño de nuestra familia y nuestros amigos, y nos encantaría que formaras parte de este momento."
-  },
-  {
-    title: "Eres parte de nuestra historia",
-    content: "Si estás leyendo esto es porque formas parte de nuestra historia y ocupas un lugar muy especial en nuestros corazones. No imaginamos dar este gran paso sin ti, así que nos llena de alegría poder compartir nuestra felicidad contigo."
-  },
-  {
-    title: "La celebración",
-    content: "La ceremonia y la celebración tendrán lugar en la hermosa Finca Siempreverde (Murcia), un lugar lleno de encanto y naturaleza donde podremos disfrutar juntos, brindar, reír y crear recuerdos inolvidables en este día tan importante."
+    title: "¡Apunta!",
+    content: "El Sábado 9 de mayo del 2026 a las 13:00h, celebramos nuestra boda en la finca Siempreverde en Murcia.",
   }
 ];
 
@@ -32,7 +32,7 @@ interface Props {
 
 const {
   sectionId = "day",
-  heading = "El Gran Día",
+  heading = "¡Nos encantaría que vinieras a celebrar este día tan especial con nosotros!",
   imageSrc = "/mariafer/mariaFerPuerto.jpg",
   imageAlt = "Fernando and María",
   storyContent = stories
@@ -68,6 +68,9 @@ const {
 <style>
   .story {
     padding: 6rem 1rem;
+    /* background-image: url('/mariafer/bgLimones3.png');
+    background-position: center;
+    background-size: cover; */
   }
 
   .story__container {
@@ -77,16 +80,23 @@ const {
 
   .story__heading {
     font-family: serif;
-    font-size: 3rem;
+    font-size: 1.3rem;
     font-weight: 300;
     text-align: center;
     margin-bottom: 4rem;
     text-wrap: balance;
+    font-style: italic;
   }
 
   @media (min-width: 768px) {
     .story__heading {
       font-size: 3.75rem;
+    }
+    .story{
+      background-size: unset;
+    }
+    .story__grid {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 
@@ -94,12 +104,6 @@ const {
     display: grid;
     gap: 3rem;
     align-items: center;
-  }
-
-  @media (min-width: 768px) {
-    .story__grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
   }
 
   .story__content {
@@ -110,6 +114,7 @@ const {
 
   .story__block {
     margin-bottom: 0;
+    text-align: center;
   }
 
   .story__subtitle {

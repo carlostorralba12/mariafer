@@ -4,52 +4,80 @@ import { Icon } from 'astro-icon/components';
 
 const events = [
   {
-    icon: "lucide:clock",
-    title: "Ceremonia",
-    time: "17:00",
-    description: "Acompáñanos mientras intercambiamos nuestros votos",
+    icon: 'lucide:bus',
+    title: 'Autobuses de ida',
+    time: '12:00',
+    description: 'Salida desde AC Hotel hacia finca Siempreverde',
   },
   {
-    icon: "lucide:utensils",
-    title: "Banquete",
-    time: "19:00",
-    description: "Cena y celebración bajo las estrellas",
+    icon: 'lucide:users',
+    title: 'Llegada',
+    time: '12:30',
+    description: 'Recepción de invitados y bienvenida',
   },
   {
-    icon: "lucide:music",
-    title: "Baile",
-    time: "21:00",
-    description: "Baila toda la noche con nosotros",
+    icon: 'lucide:heart',
+    title: 'Ceremonia',
+    time: '13:00',
+    description: 'Acompáñanos mientras intercambiamos nuestros votos',
+  },
+  {
+    icon: 'lucide:arrow-left-circle',
+    title: 'Autobuses de vuelta',
+    time: '00:00',
+    description: 'Salida desde finca Siempreverde hacia AC Hotel',
   },
 ];
 
 // Coordenadas de Finca Siempreverde Murcia
 const venueLocation = {
-  name: "Finca Siempreverde",
-  address: "Camino del Mojón, s/n",
-  city: "Murcia",
-  postalCode: "30120",
-  country: "España",
-  // Coordenadas aproximadas - ajusta según la ubicación exacta
-  lat: "37.9922",
-  lng: "-1.1307",
-  googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=Finca+Siempreverde+Murcia"
+  name: 'Finca Siempreverde',
+  address: 'Cmo. Don Luis, 12',
+  city: 'Murcia',
+  postalCode: '30110',
+  country: 'España',
+  lat: '38.0377627762055',
+  lng: '-1.1308127423302332',
+  googleMapsUrl:
+    'https://www.google.com/maps/search/?api=1&query=Finca+Siempreverde+Murcia',
 };
 ---
 
 <section id="details" class="event-details">
   <!-- Background Image -->
   <div class="event-details__background">
-    <img 
-      src="/mariafer/fincaSiempreVerde.jpg" 
-      alt="Finca Siempreverde" 
+    <img
+      src="/mariafer/siempreverde2.png"
+      alt="Finca Siempreverde"
       class="event-details__background-image"
+      loading="lazy"
     />
     <div class="event-details__overlay"></div>
   </div>
 
   <div class="event-details__container">
     <h2 class="event-details__heading">Detalles</h2>
+    
+    <p class="event-details__subtitle">
+      Toda la información que necesitas saber sobre el día de nuestra boda
+    </p>
+
+    <!-- Events Grid -->
+    <div class="event-details__grid">
+      {events.map((event, index) => (
+        <div class="event-card" style={`animation-delay: ${index * 0.1}s`}>
+          <div class="event-card__header">
+            <Icon name={event.icon} class="event-card__icon" />
+            <p class="event-card__time">{event.time}</p>
+          </div>
+
+          <div class="event-card__content">
+            <h3 class="event-card__title">{event.title}</h3>
+            <p class="event-card__description">{event.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
 
     <!-- Venue Card with Google Maps -->
     <div class="venue-card">
@@ -65,41 +93,33 @@ const venueLocation = {
           title="Ubicación Finca Siempreverde"
         ></iframe>
       </div>
-      
-      <div class="venue-card__content">
-        <Icon name="lucide:map-pin" class="venue-card__icon" />
-        <div class="venue-card__text">
-          <h3 class="venue-card__title">{venueLocation.name}</h3>
-          <p class="venue-card__address">
-            {venueLocation.address}<br />
-            {venueLocation.postalCode} {venueLocation.city}<br />
-            {venueLocation.country}
-          </p>
-          <a 
-            href={venueLocation.googleMapsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="venue-card__link"
-          >
-            <Icon name="lucide:navigation" class="venue-card__link-icon" />
-            Ver en Google Maps
-          </a>
-        </div>
-      </div>
-    </div>
 
-    <!-- Events Grid -->
-    <div class="event-details__grid">
-      {events.map((event) => (
-        <div class="event-card">
-          <div class="event-card__content">
-            <Icon name={event.icon} class="event-card__icon" />
-            <h3 class="event-card__title">{event.title}</h3>
-            <p class="event-card__time">{event.time}</p>
-            <p class="event-card__description">{event.description}</p>
+      <div class="venue-card__content">
+        <div class="venue-card__header">
+          <div class="venue-card__title-wrapper">
+            <Icon name="lucide:map-pin" class="venue-card__icon" />
+            <h3 class="venue-card__title">{venueLocation.name}</h3>
           </div>
         </div>
-      ))}
+
+        <p class="venue-card__address">
+          {venueLocation.address}
+          <br />
+          {venueLocation.postalCode} {venueLocation.city}
+          <br />
+          {venueLocation.country}
+        </p>
+
+        <a
+          href={venueLocation.googleMapsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="venue-card__link"
+        >
+          <Icon name="lucide:arrow-up-right" class="venue-card__link-icon" />
+          Ver en Google Maps
+        </a>
+      </div>
     </div>
   </div>
 </section>
@@ -148,7 +168,7 @@ const venueLocation = {
     font-size: 3rem;
     font-weight: 300;
     text-align: center;
-    margin-bottom: 4rem;
+    margin-bottom: 1rem;
     color: #1a1a1a;
   }
 
@@ -158,92 +178,15 @@ const venueLocation = {
     }
   }
 
-  /* Venue Card */
-  .venue-card {
-    background: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 0.75rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    overflow: hidden;
-  }
-
-  .venue-card__map {
-    width: 100%;
-    height: 300px;
-    background: #f3f4f6;
-  }
-
-  .venue-card__map iframe {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-
-  .venue-card__content {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    padding: 3rem;
-  }
-
-  @media (max-width: 767px) {
-    .venue-card__content {
-      padding: 2rem;
-    }
-  }
-
-  .venue-card__icon {
-    width: 1.5rem;
-    height: 1.5rem;
-    flex-shrink: 0;
-    margin-top: 0.25rem;
-    color: #1a1a1a;
-  }
-
-  .venue-card__text {
-    flex: 1;
-  }
-
-  .venue-card__title {
-    font-family: serif;
-    font-size: 1.5rem;
-    font-weight: 400;
-    margin: 0 0 0.5rem 0;
-    color: #1a1a1a;
-  }
-
-  .venue-card__address {
+  .event-details__subtitle {
+    text-align: center;
     color: #6b7280;
-    line-height: 1.625;
-    margin: 0 0 1rem 0;
-    font-size: 1rem;
-  }
-
-  .venue-card__link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #2563eb;
-    text-decoration: none;
-    font-size: 0.875rem;
-    font-weight: 500;
-    transition: color 0.2s ease;
-    padding: 0.5rem 1rem;
-    border: 1px solid #2563eb;
-    border-radius: 0.375rem;
-    margin-top: 0.5rem;
-  }
-
-  .venue-card__link:hover {
-    color: #1d4ed8;
-    border-color: #1d4ed8;
-    background-color: #eff6ff;
-  }
-
-  .venue-card__link-icon {
-    width: 1rem;
-    height: 1rem;
+    font-size: 1.125rem;
+    margin-bottom: 4rem;
+    max-width: 36rem;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
   }
 
   /* Events Grid */
@@ -259,56 +202,193 @@ const venueLocation = {
     }
   }
 
-  /* Event Cards */
+  /* Event Cards - estilo alineado con hotel-card */
   .event-card {
-    background: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 0.75rem;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #e2e8f0;
+    border-radius: 1rem;
+    padding: 2.5rem 2rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
+      0 4px 10px -2px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: slideUp 0.6s ease-out forwards;
+    opacity: 0;
+    transform: translateY(20px);
   }
 
-  .event-card__content {
-    padding: 3rem 2rem;
-    text-align: center;
+  .event-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15),
+      0 8px 20px -5px rgba(0, 0, 0, 0.1);
+    border-color: #3b82f6;
+  }
+
+  .event-card__header {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    min-height: 280px;
-  }
-
-  @media (max-width: 767px) {
-    .event-card__content {
-      padding: 2.5rem 2rem;
-      min-height: 240px;
-    }
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
   }
 
   .event-card__icon {
     width: 2rem;
     height: 2rem;
-    margin: 0 0 1.5rem 0;
-    color: #1a1a1a;
+    color: #3b82f6;
+  }
+
+  .event-card__time {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .event-card__content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: left;
   }
 
   .event-card__title {
     font-family: serif;
     font-size: 1.25rem;
-    font-weight: 400;
-    margin: 0 0 0.75rem 0;
+    font-weight: 500;
     color: #1a1a1a;
-  }
-
-  .event-card__time {
-    font-size: 1.125rem;
-    font-weight: 600;
-    margin: 0 0 1rem 0;
-    color: #1a1a1a;
+    margin: 0;
   }
 
   .event-card__description {
-    font-size: 0.875rem;
     color: #6b7280;
-    margin: 0;
+    font-size: 0.875rem;
     line-height: 1.5;
+    margin: 0;
+  }
+
+  @keyframes slideUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Venue Card - estilo alineado con hotel-card */
+  .venue-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #e2e8f0;
+    border-radius: 1rem;
+    margin-top: 1.5rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
+      0 4px 10px -2px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .venue-card__map {
+    width: 100%;
+    height: 300px;
+    background: #f3f4f6;
+  }
+
+  .venue-card__map iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .venue-card__content {
+    padding: 2.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  @media (max-width: 767px) {
+    .venue-card__content {
+      padding: 2rem 1.5rem;
+    }
+  }
+
+  .venue-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .venue-card__title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .venue-card__icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    color: #3b82f6;
+  }
+
+  .venue-card__title {
+    font-family: serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 0;
+    color: #1a1a1a;
+  }
+
+  .venue-card__badge {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: white;
+    padding: 0.25rem 0.9rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .venue-card__address {
+    color: #6b7280;
+    line-height: 1.6;
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  .venue-card__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #3b82f6;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid #3b82f6;
+    border-radius: 0.5rem;
+    margin-top: 0.5rem;
+    align-self: flex-start;
+    transition: all 0.2s ease;
+  }
+
+  .venue-card__link:hover {
+    background: #3b82f6;
+    color: white;
+    transform: translateY(-1px);
+  }
+
+  .venue-card__link-icon {
+    width: 1rem;
+    height: 1rem;
+    transition: transform 0.2s ease;
+  }
+
+  .venue-card__link:hover .venue-card__link-icon {
+    transform: rotate(45deg) scale(1.1);
   }
 </style>
