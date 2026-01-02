@@ -50,6 +50,30 @@ const description = "Únete a nosotros para celebrar nuestro día especial"
 
   <body class="font-sans antialiased">
     <slot />  <!-- equivalent to {children} -->
-    <BackgroundMusic  />
+    <BackgroundMusic />
+    <!-- Script para volver al inicio al recargar -->
+    <script is:inline>
+      // Ejecutar inmediatamente al cargar
+      if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+      }
+      
+      window.addEventListener('load', () => {
+        // Eliminar hash de la URL
+        if (window.location.hash) {
+          history.replaceState(null, '', window.location.pathname);
+        }
+        
+        // Forzar scroll al top
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+      });
+
+      // También manejar el evento beforeunload para limpiar
+      window.addEventListener('beforeunload', () => {
+        window.scrollTo(0, 0);
+      });
+    </script>
   </body>
 </html>
