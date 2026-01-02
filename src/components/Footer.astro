@@ -1,6 +1,7 @@
 ---
 // Footer.astro
-// Site footer component with contact information for dentist couple
+import { Icon } from 'astro-icon/components';
+
 interface Props {
   coupleNames?: string;
   weddingDate?: string;
@@ -12,37 +13,59 @@ const {
   coupleNames = "Fernando & María",
   weddingDate = "9 de mayo del 2026",
   location = "Finca Siempreverde, Murcia",
-  contactEmail = "hello@fernandomaria.com"
+  contactEmail = " mariaferboda@gmail.com"
 } = Astro.props;
 ---
 
 <footer class="footer">
+  <div class="footer__pattern"></div>
+  
   <div class="footer__container">
     <div class="footer__content">
+      <!-- Names Section -->
       <div class="footer__names">
         <span class="footer__emoji" role="img" aria-label="sonrisa">😁</span>
         <p class="footer__couple">{coupleNames}</p>
         <span class="footer__emoji" role="img" aria-label="sonrisa">😁</span>
       </div>
 
-      <p class="footer__date">
-        {weddingDate} • {location}
-      </p>
+      <!-- Date & Location -->
+      <div class="footer__info">
+        <div class="footer__info-item">
+          <Icon name="lucide:calendar" class="footer__icon" />
+          <span>{weddingDate}</span>
+        </div>
+        <div class="footer__divider">•</div>
+        <div class="footer__info-item">
+          <Icon name="lucide:map-pin" class="footer__icon" />
+          <span>{location}</span>
+        </div>
+      </div>
 
-      <p class="footer__contact">
-        Para cualquier consulta, contáctanos en{" "}
+      <!-- Contact -->
+      <div class="footer__contact">
+        <p class="footer__contact-text">
+          Para cualquier consulta, contáctanos en
+        </p>
         <a
           href={`mailto:${contactEmail}`}
-          class="footer__link"
+          class="footer__email"
         >
+          <Icon name="lucide:mail" class="footer__email-icon" />
           {contactEmail}
         </a>
-      </p>
+      </div>
 
-      <p class="footer__tagline">
-        <span class="footer__emoji-small" role="img" aria-label="diente">🦷</span>
-        <span class="footer__emoji-small" role="img" aria-label="corazón">❤️</span>
-        <span class="footer__emoji-small" role="img" aria-label="diente">🦷</span>
+      <!-- Hearts -->
+      <div class="footer__hearts">
+        <span class="footer__heart" role="img" aria-label="corazón">💕</span>
+        <span class="footer__heart footer__heart--delay-1" role="img" aria-label="corazón">❤️</span>
+        <span class="footer__heart footer__heart--delay-2" role="img" aria-label="corazón">💕</span>
+      </div>
+
+      <!-- Copyright -->
+      <p class="footer__copyright">
+        © 2026 {coupleNames} • Hecho con amor
       </p>
     </div>
   </div>
@@ -50,74 +73,247 @@ const {
 
 <style>
   .footer {
-    padding: 3rem 1rem;
-    border-top: 1px solid #e5e5e5;
-    background-color: #fafafa;
+    padding: 4rem 1rem 3rem;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(
+      to bottom,
+      #ffffff 0%,
+      #f8fafc 50%,
+      #eff6ff 100%
+    );
+    border-top: 1px solid #e2e8f0;
+  }
+
+  .footer__pattern {
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 80% 50%, rgba(129, 140, 248, 0.05) 0%, transparent 50%);
+    pointer-events: none;
   }
 
   .footer__container {
     max-width: 72rem;
     margin: 0 auto;
+    position: relative;
+    z-index: 1;
   }
 
   .footer__content {
     text-align: center;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.5rem;
+    animation: fadeInUp 0.8s ease-out;
   }
 
+  /* Names Section */
   .footer__names {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.75rem;
+    gap: 1rem;
   }
 
   .footer__emoji {
-    font-size: 1.5rem;
+    font-size: 2rem;
     line-height: 1;
+    animation: bounce 2s infinite;
+    transition: transform 0.3s ease;
+  }
+
+  .footer__emoji:hover {
+    animation: none;
+    transform: scale(1.3) rotate(10deg);
   }
 
   .footer__couple {
     font-family: serif;
-    font-size: 1.25rem;
+    font-size: 1.75rem;
+    font-weight: 400;
     margin: 0;
     color: #1a1a1a;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
-  .footer__date {
-    font-size: 0.875rem;
-    color: #737373;
-    margin: 0;
-  }
-
-  .footer__contact {
-    font-size: 0.75rem;
-    color: #737373;
-    margin: 0;
-  }
-
-  .footer__link {
-    text-decoration: underline;
-    color: inherit;
-    transition: color 0.2s ease;
-  }
-
-  .footer__link:hover {
-    color: #0066cc;
-  }
-
-  .footer__tagline {
+  /* Info Section */
+  .footer__info {
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 1rem 0;
+  }
+
+  .footer__info-item {
+    display: flex;
+    align-items: center;
     gap: 0.5rem;
+    color: #6b7280;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+  }
+
+  .footer__info-item:hover {
+    color: #3b82f6;
+    transform: translateY(-2px);
+  }
+
+  .footer__icon {
+    width: 1rem;
+    height: 1rem;
+    color: #3b82f6;
+  }
+
+  .footer__divider {
+    color: #d1d5db;
+    font-size: 1.25rem;
+  }
+
+  /* Contact Section */
+  .footer__contact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .footer__contact-text {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0;
+  }
+
+  .footer__email {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 255, 255, 0.8);
+    border: 2px solid rgba(59, 130, 246, 0.2);
+    border-radius: 50px;
+    color: #1d4ed8;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .footer__email:hover {
+    background: rgba(59, 130, 246, 0.1);
+    border-color: #3b82f6;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.2);
+  }
+
+  .footer__email-icon {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  /* Hearts Section */
+  .footer__hearts {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
     margin-top: 0.5rem;
   }
 
-  .footer__emoji-small {
-    font-size: 1.25rem;
+  .footer__heart {
+    font-size: 1.5rem;
     line-height: 1;
+    animation: heartbeat 1.5s infinite;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+  }
+
+  .footer__heart:hover {
+    animation: none;
+    transform: scale(1.4);
+  }
+
+  .footer__heart--delay-1 {
+    animation-delay: 0.2s;
+  }
+
+  .footer__heart--delay-2 {
+    animation-delay: 0.4s;
+  }
+
+  /* Copyright */
+  .footer__copyright {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    margin: 0.5rem 0 0;
+  }
+
+  /* Animations */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+
+  @keyframes heartbeat {
+    0%, 100% {
+      transform: scale(1);
+    }
+    25% {
+      transform: scale(1.1);
+    }
+    50% {
+      transform: scale(1);
+    }
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .footer {
+      padding: 3rem 1rem 2rem;
+    }
+
+    .footer__couple {
+      font-size: 1.5rem;
+    }
+
+    .footer__emoji {
+      font-size: 1.75rem;
+    }
+
+    .footer__info {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .footer__divider {
+      display: none;
+    }
+
+    .footer__email {
+      font-size: 0.85rem;
+      padding: 0.65rem 1.25rem;
+    }
   }
 </style>
