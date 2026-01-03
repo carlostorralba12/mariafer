@@ -15,7 +15,10 @@ const {
   width = '100%', 
   title = 'Formulario'
 } = Astro.props;
-const embedUrl = 'https://icackg4v.forms.app/form/69583e05ece46e000201f423';
+
+const embedUrl = formId 
+  ? `https://docs.google.com/forms/d/e/${formId}/viewform?embedded=true`
+  : `${shortlink}?embedded=true`;
 ---
 <section id="form" class="google-form-container">
   <div class="google-form-header">
@@ -54,7 +57,6 @@ const embedUrl = 'https://icackg4v.forms.app/form/69583e05ece46e000201f423';
   .google-form-content {
     max-width: 1000px; /* 4xl = 72rem * 12.5px ≈ 896px */
     margin: 0 auto;
-    padding: 1.5rem; /* p-6 */
     border-radius: 1.5rem; /* rounded-2xl */
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* shadow-2xl */
     background: rgba(255, 255, 255, 0.8);
