@@ -10,7 +10,7 @@ interface Props {
 }
 
 const {
-  accountLabel = 'Para vuestro detalle',
+  accountLabel = '',
   accountNumber,
   bankName = '',
   ibanLabel = '',
@@ -23,32 +23,30 @@ const {
     <div class="gift-account-section__gradient"></div>
   </div>
 
-  <div class="gift-account-section__container gift-account-section__observe">
-    <h2 class="gift-account-section__heading">Regalo</h2>
+  <div class="gift-account-section__container">
+    <h2 class="gift-account-section__heading">Detalle</h2>
 
     <p class="gift-account-section__subtitle">
       Vuestra presencia es el mejor regalo. Si deseáis contribuir a nuestro viaje de novios, 
-      os dejamos esta información con todo nuestro agradecimiento.
+      os dejamos esta información con todo nuestro cariño y agradecimiento.
     </p>
 
     <div class="gift-card">
       <div class="gift-card__header">
         <div class="gift-card__title-wrapper">
-          <Icon name="lucide:sparkles" class="gift-card__icon" />
           <div>
             <h3 class="gift-card__title">{accountLabel}</h3>
             {bankName && <p class="gift-card__bank">{bankName}</p>}
           </div>
         </div>
 
-        <div class="gift-card__badge">Con todo nuestro cariño</div>
       </div>
 
       <div class="gift-card__content">
         {ibanLabel && <p class="gift-card__iban-label">{ibanLabel}</p>}
 
         <div class="gift-card__iban-wrapper">
-          <span class="gift-card__iban glitter-text">
+          <span class="gift-card__iban">
             {accountNumber}
           </span>
         </div>
@@ -63,10 +61,6 @@ const {
           <span class="gift-card__copy-label">Copiar</span>
         </button>
 
-        <p class="gift-card__hint">
-          Podéis usar este número cuando lo deseéis, sin ninguna prisa.
-        </p>
-
         <p
           class="gift-card__copy-feedback"
           role="status"
@@ -79,44 +73,34 @@ const {
 
 <script>
   if (typeof window !== 'undefined') {
-    const section = document.querySelector('.gift-account-section__observe');
-
-    if (section) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              section.classList.add('gift-account-section__observe--active');
-            } else {
-              section.classList.remove('gift-account-section__observe--active');
-            }
-          });
-        },
-        { threshold: 0.3 }
-      );
-
-      observer.observe(section);
-    }
-
     const copyButton = document.querySelector<HTMLButtonElement>(
       '.gift-card__copy-button'
     );
     const feedback = document.querySelector<HTMLElement>(
       '.gift-card__copy-feedback'
     );
+    const ibanElement = document.querySelector<HTMLElement>(
+      '.gift-card__iban'
+    );
 
-    if (copyButton && feedback) {
+    if (copyButton && feedback && ibanElement) {
       copyButton.addEventListener('click', async () => {
         const value = copyButton.dataset.account || '';
 
         try {
           await navigator.clipboard.writeText(value);
+          
+          // Activate sparkle animation
+          ibanElement.classList.add('gift-card__iban--sparkle');
           copyButton.classList.add('gift-card__copy-button--success');
           feedback.textContent = '¡Copiado!';
+          
+          // Remove sparkle animation after 2.5s
           setTimeout(() => {
+            ibanElement.classList.remove('gift-card__iban--sparkle');
             copyButton.classList.remove('gift-card__copy-button--success');
             feedback.textContent = '';
-          }, 1500);
+          }, 2500);
         } catch (error) {
           feedback.textContent = 'No se ha podido copiar.';
         }
@@ -291,6 +275,47 @@ const {
     line-height: 1.5;
     word-break: break-all;
     padding: 0 0.5rem;
+    position: relative;
+    display: inline-block;
+    transition: all 0.3s ease;
+  }
+
+  /* Sparkle animation on copy */
+  .gift-card__iban--sparkle {
+    background: linear-gradient(
+      120deg,
+      #0f172a,
+      #1d4ed8,
+      #38bdf8,
+      #e5e7eb,
+      #60a5fa,
+      #1d4ed8,
+      #0f172a
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: glitter-sparkle 2.5s ease-in-out;
+  }
+
+  .gift-card__iban--sparkle::before,
+  .gift-card__iban--sparkle::after {
+    content: '';
+    position: absolute;
+    inset: -40%;
+    background-image:
+      radial-gradient(circle, rgba(255, 255, 255, 0.9) 0, transparent 50%),
+      radial-gradient(circle, rgba(191, 219, 254, 0.95) 0, transparent 50%),
+      radial-gradient(circle, rgba(96, 165, 250, 0.9) 0, transparent 50%);
+    mix-blend-mode: screen;
+    pointer-events: none;
+    animation: glitter-trail 2.5s ease-in-out;
+  }
+
+  .gift-card__iban--sparkle::after {
+    filter: blur(2px);
+    animation: glitter-trail-secondary 2.5s ease-in-out;
   }
 
   .gift-card__copy-button {
@@ -375,90 +400,21 @@ const {
     }
   }
 
-  /* Animación purpurina + aparición/desaparición */
-  .gift-account-section__observe .glitter-text {
-    opacity: 0;
-  }
-
-  .gift-account-section__observe--active .glitter-text {
-    animation:
-      iban-fade-cycle 6s ease-in-out infinite,
-      glitter-sparkle 2.5s linear infinite;
-  }
-
-  .glitter-text {
-    position: relative;
-    display: inline-block;
-    background: linear-gradient(
-      120deg,
-      #0f172a,
-      #1d4ed8,
-      #38bdf8,
-      #e5e7eb,
-      #1d4ed8,
-      #0f172a
-    );
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  .glitter-text::before,
-  .glitter-text::after {
-    content: '';
-    position: absolute;
-    inset: -40%;
-    background-image:
-      radial-gradient(circle, rgba(255, 255, 255, 0.85) 0, transparent 50%),
-      radial-gradient(circle, rgba(191, 219, 254, 0.9) 0, transparent 50%),
-      radial-gradient(circle, rgba(129, 140, 248, 0.9) 0, transparent 50%);
-    mix-blend-mode: screen;
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .glitter-text::before {
-    filter: blur(3px);
-    animation: glitter-trail 2.5s linear infinite;
-  }
-
-  .glitter-text::after {
-    filter: blur(1.5px);
-    animation: glitter-trail-secondary 2.5s linear infinite;
-  }
-
-  @keyframes iban-fade-cycle {
-    0%,
-    10% {
-      opacity: 0;
-      transform: translateY(8px);
-    }
-    20%,
-    60% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    80%,
-    100% {
-      opacity: 0;
-      transform: translateY(-8px);
-    }
-  }
-
+  /* Glitter animations */
   @keyframes glitter-trail {
     0% {
       opacity: 0;
       transform: translateX(-120%) translateY(10%) rotate(0deg);
       background-position: 0 0, 40% 40%, 80% 20%;
     }
-    25% {
-      opacity: 0.9;
+    20% {
+      opacity: 1;
     }
     50% {
+      opacity: 0.9;
       background-position: 40% 40%, 80% 20%, 0 0;
     }
-    75% {
+    80% {
       opacity: 0.6;
     }
     100% {
@@ -474,11 +430,11 @@ const {
       transform: translateX(120%) translateY(-10%) rotate(-5deg);
       background-position: 80% 0, 10% 60%, 50% 30%;
     }
-    30% {
+    25% {
       opacity: 0.8;
     }
     60% {
-      opacity: 0.4;
+      opacity: 0.5;
     }
     100% {
       opacity: 0;
@@ -488,16 +444,36 @@ const {
   }
 
   @keyframes glitter-sparkle {
-    0%,
-    100% {
+    0% {
+      background-position: 0% center;
       text-shadow:
-        0 0 4px rgba(191, 219, 254, 0.3),
-        0 0 10px rgba(59, 130, 246, 0.4);
+        0 0 4px rgba(191, 219, 254, 0.4),
+        0 0 10px rgba(59, 130, 246, 0.5);
+    }
+    25% {
+      text-shadow:
+        0 0 8px rgba(219, 234, 254, 0.7),
+        0 0 18px rgba(59, 130, 246, 0.8),
+        0 0 25px rgba(96, 165, 250, 0.6);
     }
     50% {
+      background-position: 100% center;
       text-shadow:
-        0 0 6px rgba(219, 234, 254, 0.6),
-        0 0 16px rgba(59, 130, 246, 0.7);
+        0 0 12px rgba(219, 234, 254, 0.9),
+        0 0 24px rgba(59, 130, 246, 1),
+        0 0 35px rgba(96, 165, 250, 0.8);
+    }
+    75% {
+      text-shadow:
+        0 0 8px rgba(219, 234, 254, 0.7),
+        0 0 18px rgba(59, 130, 246, 0.8),
+        0 0 25px rgba(96, 165, 250, 0.6);
+    }
+    100% {
+      background-position: 200% center;
+      text-shadow:
+        0 0 4px rgba(191, 219, 254, 0.4),
+        0 0 10px rgba(59, 130, 246, 0.5);
     }
   }
 </style>
